@@ -1,12 +1,16 @@
 const express = require("express");
+
+const { MongoClient, ServerApiVersion } = require("mongodb");
 const app = express();
+const cors = require("cors");
 const port = 5000;
 
+app.use(cors());
 app.get("/", (req, res) => {
 	res.send("Hello World mama!");
 });
 
-const services = [
+const products = [
 	{
 		id: 1,
 		name: "Rice",
@@ -64,11 +68,56 @@ const services = [
 app.get("/service", (req, res) => {
 	res.send(service);
 });
-app.get("/services/:id", (req, res) => {
+app.get("/products/:id", (req, res) => {
 	console.log(req.params);
 	const id = req.params.id;
-	const service = services.find((f) => f.id == id);
-	res.send(service);
+	const product = products.find((u) => u.id == id);
+	res.send(product);
+});
+
+app.get("/products/:inventoryId", async (req, res) => {
+	console.log(req.params);
+	const id = req.params.id;
+	const query = { id: ObjectId(id) };
+	const product = await products.findOne(query);
+	res.send(product);
+});
+
+const uri =
+	"mongodb+srv://dbuser1:QFGKD2Du4Ai3qFSY@cluster0.8wa01.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(
+	uri,
+	{ useUnifiedTopology: true },
+	{ useNewUrlParser: true },
+	{ connectTimeoutMS: 30000 },
+	{ keepAlive: 1 }
+);
+
+// Contains custom url for accessing database
+
+async function run() {
+	try {
+		await client.connect();
+		const productCollection = client
+			.db("wareHouse")
+			.collection("productCollection");
+		const product = {
+			name: "raihan",
+			Eamil: "raihanuliium@gmail.com",
+		};
+		const result = await productCollection.insertOne(product);
+		console.log(`product inserted with id: ${result.insertedId}`);
+	} finally {
+		// await client.close();
+	}
+}
+run().catch(console.dir);
+
+client.connect((err) => {
+	console.log("db connected");
+
+	// perform actions on the collection object
+	client.close();
 });
 
 app.listen(port, () => {
