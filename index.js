@@ -1,11 +1,12 @@
 // user: FreshGoods
 // W7VRyyyISJEvRPfm
 const express = require("express");
+require("dotenv").config();
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const cors = require("cors");
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
