@@ -75,12 +75,12 @@ async function run() {
 			const result = await productCollection.deleteOne(query);
 			res.send(result);
 		});
-		// will use later
 	} finally {
 		// await client.close();
 	}
 }
 run().catch(console.dir);
+//localhost output
 app.get("/", (req, res) => {
 	res.send("yes running key-two-telecom server site");
 });
