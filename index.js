@@ -10,6 +10,7 @@ const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+//password added
 const uri =
 	"mongodb+srv://FreshGoods:jylUOzhc3yInOVlF@cluster0.hrdrz.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
